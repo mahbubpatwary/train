@@ -1,0 +1,1580 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Running Train</title>
+<style>
+	*{margin:0;padding: 0}
+	
+	#screen
+	{
+		position: absolute;
+		width:100%;
+		height: 100%;
+		background-color: white;
+		z-index: 1;
+		overflow: hidden;
+	}
+	
+	#train
+	{
+		position: absolute;
+		width: 100%;
+		height: 118px;
+		bottom:35%;
+		display: flex;
+		left:2000px;
+		z-index: 1;
+		opacity: 1;
+	}
+	
+	/*engine design css code start*/
+	#engine
+	{
+		width: 300px;
+		height: 60%;
+		background:transparent;
+		margin-left: 20px;
+		margin-top: 22px;
+	}
+	#body
+	{
+		width: 300px;
+		height: 100%;
+		background-color:#48CEFF;
+		display: flex;
+		border-radius: 87px 63px 15px 12px;
+	}
+	#frontsection
+	{
+		width: 50%;
+		height: 100%;
+		background:linear-gradient(#e3f2fd,#90caf9);
+		transform-origin: center;
+		transform: skewX(-45deg);
+		border-radius: 15px 14px 10px 44px;
+	}
+	#backsection
+	{
+		width: 67%;
+		height: 100%;
+		background:linear-gradient(#e3f2fd,#90caf9);
+		transform-origin: center;
+		margin-left: -50px;
+		border-radius: 0px 14px 10px 10px;
+	}
+	#enginebasebox
+	{
+		width: 100%;
+		height: 19px;
+    	background:transparent;
+    	border-radius: 0px 0px 0px 12px;
+    	margin-left: -10px;
+   		margin-top: -10px;
+	}
+	#frontbumper
+	{
+		width: 10px;
+		height: 20px;
+		background:#90caf9;
+		border-radius: 0px 0px 0px 12px;
+	}
+	#window
+	{
+		width: 20px;
+		height: 19px;
+    	background-color: #515151;
+    	border-radius: 17px 0px 0px 0px;
+    	margin-left: 11px;
+    	margin-top: 9px;
+		transform-origin: center;
+		transform: skewX(45deg);
+	}
+	#door
+	{
+		position: absolute;
+		width: 20px;
+    	height: 58px;
+    	background-color: #00b0ff;
+		border: 1px solid #1e88e5;
+    	border-radius: 5px 5px 5px 5px;
+    	margin-left: 56px;
+    	margin-top: -20px;
+		transform-origin: center;
+		transform: skewX(45deg);
+	}
+	#door::before
+	{
+		position: absolute;
+		content: "";
+		width: 14px;
+    	height: 18px;
+    	background-color:#515151;
+		border: 1px solid #1e88e5;
+    	border-radius: 5px 5px 5px 5px;
+		margin-left: 2px;
+    	margin-top: 2px;
+	}
+	#logobox
+	{
+		position: absolute;
+		width: 207px;
+    	height: 58px;
+    	background:transparent;
+    	border-radius: 5px 5px 5px 5px;
+    	margin-left: 83px;
+    	margin-top: 5px;
+		z-index: 2;
+	}
+	#amtracklogoimg
+	{
+		height: auto;
+		width: 50%;
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+	}
+	#smokebox
+	{
+		position: absolute;
+		width: 42px;
+    	height: 2px;
+    	left: 225px;
+    	top: 19px;
+		background-color:#005378; 
+	}
+	
+	#flag
+	{
+		position: absolute;
+		width: 30px;
+    	height: 20px;
+    	left: 11px;
+    	top: 21px;
+	}
+	
+	.smoke
+	{
+		position: absolute;
+		margin-left: 25%;
+		margin-top: 2%;
+		width:10px;
+		height: 10px;
+		z-index: 1;
+		background-color: black;
+		border-radius: 100%;
+		opacity: 0;
+		filter:blur(2px);
+		animation-name: smokes;
+		animation-direction: normal;
+		animation-duration: 0.3s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+		animation-play-state: running;
+	}
+	@keyframes smokes
+	{
+		0%{
+		margin-left: 25%;
+		margin-top: 2%;
+		filter:blur(2px);
+		transform: scale(1);
+		opacity: 1;
+		}	
+		
+	50%{
+		margin-left: 75%;
+		margin-top: -150%;
+		filter:blur(5px);
+		transform: scale(2);
+		opacity: 1;
+		}
+		
+	 100%{
+		margin-top: -300%;
+		margin-left: 175%;
+		filter:blur(10px);
+		transform: scale(3);
+		opacity: 1;
+		}
+	}
+	/*engine design css code end*/
+	
+	/*coach connector css code start*/ 
+	.connector
+	{
+		position: absolute;
+		width: 25px;
+		height: 8px;
+		background-color: black;
+		z-index: -1;
+		margin-left:-15px;
+		top: 80px;
+	}
+	.innerway
+	{
+		position: absolute;
+		width: 25px;
+		height: 81px;
+		background:linear-gradient(to left,#9e9e9e,#bdbdbd,#9e9e9e);
+		z-index: -1;
+		margin-left:-15px;
+		top: 8px;
+	}
+	.singleinnerway
+	{
+		position: absolute;
+		width: 25px;
+		height: 62px;
+		background:linear-gradient(to left,#9e9e9e,#bdbdbd,#9e9e9e);
+		z-index: -1;
+		margin-left:-15px;
+		top: 25px;
+	}
+/*coach connector css code end*/ 
+	
+/*luggage coach ccs design start*/	
+	#luggagecoach
+	{
+		width: 335px;
+    	height: 60%;
+    	margin-top: 22px;
+		margin-left: 10px;
+		background:linear-gradient(#9e9e9e,#bdbdbd,#9e9e9e);
+		border-radius: 2px 2px 5px 5px;
+	}
+	.luggagecoachbodysection
+	{
+		width: 335px;
+    	height: 81px;
+		border-radius: 2px 2px 5px 5px;
+	}
+	#frontdoor
+	{
+		position: absolute;
+		width: 35px;
+    	height: 62px;
+		background-color:#bdbdbd;
+		border: 1px solid #F3F3F3;
+		top:25px;
+		margin-left: 57px;
+		line-height: 51px;
+		font-size: 20px;
+		color:white;
+		padding-left: 2px;
+		border-radius: 5px 5px 5px 5px;
+	}
+	#backdoor
+	{
+		position: absolute;
+		width: 35px;
+    	height: 62px;
+		background-color:#bdbdbd;
+		border: 1px solid #F3F3F3;
+		top:25px;
+		margin-left: 235px;
+		line-height: 51px;
+		font-size: 20px;
+		color:white;
+		padding-right: 2px;
+		text-align: right;
+		border-radius: 5px 5px 5px 5px;
+	}
+	.stripe
+	{
+		position: relative;
+		width: 100%;
+		height: 20px;
+		top: 27px;
+	}
+	.passengerstripe
+	{
+		position: relative;
+		width: 100%;
+		height: 20px;
+		top: 3px;
+	}
+	.red
+	{
+		width: 100%;
+		height: 6.666666666666667px;
+		background-color: red;
+	}
+	.white
+	{
+		width: 100%;
+		height: 6.666666666666667px;
+		background-color: white;
+	}
+	.blue
+	{
+		width: 100%;
+		height: 6.666666666666667px;
+		background-color: #399FFF;
+	}
+	p{
+		position: absolute;
+		z-index: 2;
+		top:72px;
+		margin-left: 99px;
+		font-size: 15px;
+		font-family: arial;
+		color:white;
+	}
+	/*luggage coach ccs design end*/	
+	
+	/*passenger coach ccs design start*/	
+	.twostoreypassengercoach
+	{
+		width: 335px;
+    	height: 77%;
+    	margin-top: 2px;
+		margin-left: 10px;
+		background:linear-gradient(#9e9e9e,#bdbdbd,#9e9e9e);
+		border-radius: 2px 2px 5px 5px;
+	}
+	.passengercoachbodysection
+	{
+		width: 335px;
+    	height: 101px;
+		border-radius: 2px 2px 5px 5px;
+	}
+	.topwindowset
+	{
+		width: 100%;
+		height: 35px;
+		display: flex;
+	}
+	.bottomwindowset
+	{
+		width: 100%;
+		height: 35px;
+		display: flex;
+	}
+	.pwindowtop
+	{
+		width: 35px;
+		height: 20px;
+		background-color: #515151;
+		margin-left: 11.3px;
+		margin-top: 10px;
+		border-radius: 5px;
+	}
+	.pwindowbottom
+	{
+		width: 35px;
+		height: 20px;
+		background-color: #515151;
+		margin-left: 11.3px;
+		margin-top: 8px;
+		border-radius: 5px;
+	}
+	.pdoor
+	{
+		position: relative;
+		width: 35px;
+		height: 44px;
+		background-color:#bdbdbd; 
+		margin-left: 11.3px;
+		margin-top: 7px;
+		border-radius: 5px;
+		z-index: 99;
+		border: 1px solid white;
+	}
+	.dwindow
+	{
+		width: 21px;
+		height: 26px;
+		background-color: #515151;
+		margin-top: 2px;
+		border-radius: 5px;
+		margin-left: 7px;
+	}
+	/*passenger coach ccs design end*/	
+	
+	/*train wheel design css code start*/
+		.wheelset
+	{
+		width: 100%;
+		height: 25px;
+		display: flex;	
+		margin-left: 11px;
+		margin-top: -10px;
+	}
+	
+	.bogie
+	{
+		display: flex;	
+		margin-left: -42px;
+	}
+	
+	.wheels
+	{
+		width: 25px;
+		height: 25px;
+		border-radius: 100%;
+		background-color: #0B0B0B;
+		margin-left: 5px;
+		transform-origin: center;
+		transform: rotate(360deg);
+		animation-name: rotatewheel;
+		animation-direction: normal;
+		animation-duration: 0.5s;
+		animation-timing-function: linear;
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+		animation-play-state: running;
+		color: white;
+		font-weight: bolder;
+		text-align: center;
+	}
+	
+	@keyframes rotatewheel
+	{
+		from{transform: rotate(360deg);}
+		to{transform: rotate(0deg);}
+	}
+	
+	#dieseltank
+	{
+		width: 160px;
+		height: 20px;
+		margin-left: 5px;
+		background:linear-gradient(#757575,#424242,#424242,#212121);
+		transform-origin: top;
+		transform: perspective(200px)rotateX(-20deg);
+		border-radius: 0px 0px 10px 10px;
+	}
+	
+	.axle1
+	{
+	 	position: relative;
+    	width: 42px;
+    	height: 10px;
+    	left: 12px;
+    	top: 8px;
+		z-index: 2;
+		border-radius: 50px 50px;
+		background-color: #848484;
+	}
+	
+	.axle2
+	{
+	 	position: relative;
+    	width: 42px;
+    	height: 10px;
+    	left: 12px;
+    	top: 8px;
+		z-index: 2;
+		border-radius: 50px 50px;
+		background-color:#848484;
+	}
+	
+	/*wheel gap for each compartment*/
+	.wheelgap
+	{
+		width: 180px;
+		height: 20px;
+		margin-left: 5px;
+		background:linear-gradient(#9e9e9e,#bdbdbd);
+		transform-origin: top;
+		transform: perspective(200px)rotateX(-20deg);
+		border-radius: 0px 0px 10px 10px;
+	}
+	/*train wheel design css code end*/
+	
+	/*track design css code start*/
+	#track
+	{
+		position:fixed;
+		width: 100%;
+		height: 11px;
+		background-color: #5F5F5F;
+		top: 65%;
+		z-index: 1;
+	}
+	/*track design css code end*/
+	
+	/*ground design css code start*/
+	#ground1
+	{
+		position: fixed;
+    	width: 47%;
+    	height: 289px;
+    	background: url(grass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: repeat;
+    	background-size: cover;
+    	top: 54%;
+    	transform-origin: center;
+    	transform: perspective(200px)rotateX(45deg);
+    	left: -8%;
+		z-index: -1;
+		opacity: 0.8;
+	}
+	
+	#ground2
+	{
+		position: fixed;
+    	width: 47%;
+    	height: 289px;
+    	background: url(grass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: repeat;
+    	background-size: cover;
+    	top: 54%;
+    	transform-origin: center;
+    	transform: perspective(200px)rotateX(45deg);
+    	left: 24%;
+		z-index: -1;
+	}
+	
+	#ground3
+	{
+		position: fixed;
+    	width: 56%;
+    	height: 289px;
+    	background: url(grass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: repeat;
+    	background-size: cover;
+    	top: 54%;
+    	transform-origin: center;
+    	transform: perspective(200px)rotateX(45deg);
+    	left: 54%;
+		z-index: -1;
+		opacity: 0.8;
+	}
+	/*ground design css code start*/
+	
+	/*road design css code start*/
+	#road
+	{
+		position: absolute;
+    	width: 22%;
+    	height: 296px;
+    	left: 37%;
+    	top: 50.2%;
+    	z-index: 5;
+    	background: url(road.jpg);
+    	background-attachment: scroll;
+   	 	background-repeat: repeat;
+    	background-size: cover;
+    	transform-origin: center;
+   	    transform: perspective(200px)rotateX(57deg);
+	}
+	
+	#roadmiddleline
+	{
+		position: absolute;
+    	width: 1px;
+    	height: 397px;
+    	left: 48%;
+    	top: 35.8%;
+    	z-index: 5;
+    	background-color: white;
+    	transform-origin: center;
+    	transform: perspective(200px)rotateX(88deg);
+	}
+	/*road design css code end*/
+	
+	/*railway stones css code start*/
+	#rockbed
+	{
+		position: fixed;
+		width: 100%;
+		height: 15px;
+		display: flex;
+		top: 66%;
+    	left: 0;
+		z-index: 2;
+		transform-origin: center;
+    	transform: perspective(200px)rotateX(5deg);
+	}
+	
+	.stones
+	{
+    	width: 5%;
+    	height: 100%;
+    	background: url(rock.png);
+    	background-attachment: scroll;
+    	background-repeat: no-repeat;
+    	background-size: cover;
+		background-position: center;	
+	}
+	/*railway stones css code end*/
+	
+	/*railgate css code start*/
+	#railgatestand
+	{
+		position: fixed;
+		width: 7px;
+    	height: 150px;
+    	top: 52%;
+    	left: 496px;
+    	z-index: 3;
+		background:linear-gradient(to right,#707070,white,#707070);
+		border-radius: 10px 10px 0px 0px;
+	}
+	
+	#signalbox
+	{
+		position: fixed;
+		width: 50px;
+    	height: 20px;
+    	top: 58%;
+    	left: 470px;
+    	z-index: 7;
+    	background-color: #707070;
+    	border-radius: 10px 10px 10px 10px;
+		display: flex;
+		padding: 4px;
+	}
+	
+	.redlight
+	{
+		width: 20px;
+    	height: 20px;
+		background:radial-gradient(white,black,black);
+		border-radius: 100%;
+		border:1px solid white;
+	}
+	
+	#railcross1
+	{
+		position: fixed;
+		width: 49px;
+    	height: 8px;
+    	top: 52%;
+    	left: 474px;
+    	z-index: 3;
+		background-color: #ABABAB;
+		transform-origin: center;
+		transform: rotate(45deg);
+		font-size: 9px;
+		text-align: center;
+	}
+	#railcross1::after
+	{
+		content: "RAILROAD";
+		position: absolute;
+		width: 49px;
+    	height: 8px;
+    	top: -2.5px;
+    	left: 0px;
+	}
+	
+	#railcross2
+	{
+		position: fixed;
+		width: 49px;
+    	height: 8px;
+    	top: 52%;
+    	left: 474px;
+    	z-index: 3;
+		background-color: #ABABAB;
+		transform-origin: center;
+		transform: rotate(-45deg);
+		font-size: 9px;
+		text-align: center;
+	}
+	#railcross2::after
+	{
+		content: "CROSSING";
+		position: absolute;
+		width: 49px;
+    	height: 8px;
+    	top: -2.5px;
+    	left: 0px;
+	}
+	
+	#railgategearbox
+	{
+		position: fixed;
+		width: 30px;
+    	height: 18px;
+    	top: 64%;
+    	left: 485px;
+    	z-index: 7;
+		background:linear-gradient(to bottom,dimgray,white,dimgray);
+	}
+	
+	#movablerailgatebox
+	{
+		position: fixed;
+		width: 276px;
+    	height: 25px;
+    	top: 62.5%;
+    	left: 500px;
+    	z-index: 5;
+		transform-origin: left;
+		transform: rotate(-79deg);
+		transition: 3s ease-out;
+	}
+	
+	#railgate
+	{
+		width: 276px;
+    	height: 9px;
+    	top: 64.5%;
+    	left: 507px;
+    	z-index: 5;
+		background:linear-gradient(to bottom,dimgray,white,dimgray);
+	}
+	
+	#signalredlight
+	{
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		border-radius: 100%;
+		height: 15px;
+		width: 15px;
+		background:radial-gradient(white,black,black);
+		border: 2px solid dimgray;
+	}
+	/*railgate css code end*/
+	
+	
+	/*mountain design css code start*/
+	#mountainrange
+	{
+		width: 100%;
+		height: 65%;
+		background-color: lightskyblue;
+		overflow: hidden;
+		display: flex;
+	}
+	
+	#smallmountain
+	{
+		width: 300px;
+    	height: 320px;
+    	background: url(grass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: repeat;
+    	background-size: cover;
+    	transform-origin: center;
+    	transform: rotate(45deg);
+    	margin-top: 250px;
+    	margin-left: 46px;
+		border-radius: 56px 0px 0px 0px;
+		box-shadow:  inset 0 0 16px 5px #1b5e20;
+	}
+	#smallmountain::before {
+    content: '';
+	width: 300px;
+    height: 300px;	
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-image: linear-gradient(to bottom right ,#c8e6c9,#1b5e20);
+	opacity: .6; 
+	border-radius: 56px 0px 0px 0px;	
+  }
+	
+	#largemountain
+	{
+		width: 1000px;
+    	height: 1000px;
+    	background: url(mountaingrass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: no-repeat;
+    	background-size: cover;
+    	transform-origin: center;
+    	transform: rotate(45deg);
+    	margin-top: 156px;
+    	margin-left: -144px;
+		border-radius: 56px 0px 0px 0px;
+		box-shadow:  inset 0 0 16px 5px #1b5e20;
+	}
+	#largemountain::before {
+    content: '';
+	width: 1000px;
+    height: 1000px;	
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-image: linear-gradient(to bottom right ,#b2ff59,#1b5e20,#33691e,#33691e);
+	opacity: 0.6; 
+	border-radius: 56px 0px 0px 0px;	
+  }
+	
+	#mediummountain
+	{
+		width: 850px;
+    	height: 850px;
+    	background: url(grass.jpg);
+    	background-attachment: scroll;
+    	background-repeat: no-repeat;
+    	background-size: cover;
+    	transform-origin: center;
+    	transform: rotate(45deg);
+    	margin-top: 200px;
+    	margin-left: -480px;
+		border-radius: 56px 0px 0px 0px;
+		box-shadow:  inset 0 0 17px 9px #1b5e20;
+	}
+	#mediummountain::before {
+    content: '';
+	width: 850px;
+    height: 850px;	
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-image: linear-gradient(to bottom right, #b2ff59,#33691e,#33691e,#33691e);
+	opacity: 0.7; 
+	border-radius: 56px 0px 0px 0px;	
+  }
+/*mountain design css code end*/
+	
+/*cloud design css code start*/	
+#fixedcloud1
+	{
+		position: absolute;
+		width: 15%;
+    	height: auto;
+    	top: 169px;
+    	left: 133px;
+    	z-index: 2;
+		opacity: 0.9;
+	}
+	
+	#fixedcloud2
+	{
+		position: absolute;
+		width: 15%;
+    	height: auto;
+    	top: 4px;
+    	left: 597px;
+   		z-index: 2;
+		opacity: 0.9;
+	}	
+	
+	#fixedcloud3
+	{
+		position: absolute;
+		width: 20%;
+    	height: auto;
+    	top: 47px;
+    	left: 966px;
+   		z-index: 2;
+		opacity: 0.9;
+	}	
+	
+	#cld1{
+		position: absolute;
+		top: 78px;
+		left:25px;
+	}
+	#cld2{
+		position: absolute;
+		top: 44px;
+		left:19%;
+	}
+	#cld3{
+		position: absolute;
+		top: 74px;
+		left:34%;
+	}
+	#cld4{
+		position: absolute;
+		top: 2px;
+		left:61%;
+	}
+	#cld5{
+		position: absolute;
+		top: 127px;
+		left:84%;
+	}
+	#cld6{
+		position: absolute;
+		top: 152px;
+		left:26%;
+	}
+	
+	#movingcloud
+	{
+		position: absolute;
+		width: 100%;
+    	height: 430px;
+		overflow: hidden;
+    	top: 0px;
+   		left: 0px;
+   		z-index: 0;
+		background:transparent;
+	}
+/*cloud design css code end*/	
+	
+.singlestoreypassengercoach
+	{
+		width: 335px;
+    	height: 60%;
+    	margin-top: 22px;
+		margin-left: 10px;
+		background:linear-gradient(#9e9e9e,#bdbdbd,#9e9e9e);
+		border-radius: 2px 2px 5px 5px;
+	}	
+	.singlestoreypassengercoachbodysection
+	{
+		width: 335px;
+    	height: 81px;
+		border-radius: 2px 2px 5px 5px;
+	}
+	.spstripe
+	{
+		position: relative;
+		width: 100%;
+		height: 20px;
+		top: 22px;
+	}
+	.windowset
+	{
+		position: relative;
+		width: 100%;
+		height: 25px;
+		top: 23px;
+		display: flex;
+		z-index: 99;
+	}
+	.window
+	{
+		width: 35px;
+		height: 20px;
+		background-color: #515151;
+		margin-left: 11.3px;
+		margin-top: 3px;
+		border-radius: 5px;
+	}
+	.psdoor
+	{
+		position: relative;
+		width: 35px;
+		height: 62px;
+		background-color:#bdbdbd; 
+		margin-left: 11.3px;
+		margin-top: -20px;
+		border-radius: 5px;
+		z-index: 99;
+		border: 1px solid white;
+	}
+	.dswindow
+	{
+		width: 21px;
+		height: 26px;
+		background-color: #515151;
+		margin-top: 18px;
+		border-radius: 5px;
+		margin-left: 7px;
+	}
+/*end*/	
+</style>
+</head>
+
+<body>
+<audio autoplay>
+  <source src="TRAIN PASSING.mp3" type="audio/mp3">
+</audio>
+
+<audio autoplay>
+  <source src="CROSSING BELL.mp3" type="audio/mp3">
+</audio>
+
+
+<div id="screen">
+	<div id="fixedcloud1">
+		<img src="cloud.png" height="auto" width="100%">
+	</div>
+	<div id="fixedcloud2">
+		<img src="cloud.png" height="auto" width="100%">
+	</div>
+	<div id="fixedcloud3">
+		<img src="cloud.png" height="auto" width="100%">
+	</div>
+	
+	<div id="movingcloud">
+		<img src="cloud.png" height="auto" width="12%" id="cld1">
+		<img src="cloud.png" height="auto" width="10%" id="cld2">
+		<img src="cloud.png" height="auto" width="15%" id="cld3">
+		<img src="cloud.png" height="auto" width="20%" id="cld4">
+		<img src="cloud.png" height="auto" width="15%" id="cld5">
+		<img src="cloud.png" height="auto" width="5%" id="cld6">
+	</div>
+	
+	<div id="mountainrange">
+		<div id="smallmountain"></div>	
+		<div id="largemountain"></div>	
+		<div id="mediummountain"></div>
+	</div>
+
+	<div id="train">
+		<div id="engine">
+		<div id="smokebox">
+			<div class="smoke"></div>
+		</div>
+		<div id="body">
+		<div id="logobox">
+			<img src="Amtrak_logo_2.png" id="amtracklogoimg">
+			<img src="flag.png" id="flag">
+		</div>
+			<div id="frontsection">
+				<div id="window"></div>
+				<div id="door"></div>
+			</div>
+			<div id="backsection"></div>
+		</div>
+		<div id="enginebasebox">
+			<div id="frontbumper"></div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div id="dieseltank"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+		</div>
+		</div>
+		
+		
+		<div id="luggagecoach">
+		<div class="connector"></div>
+			<div class="luggagecoachbodysection">
+			<div class="stripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			<p>LUGGAGE COACH</p>
+				<div id="frontdoor">.</div>
+				<div id="backdoor">.</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			<div class="twostoreypassengercoach">
+			<div class="connector"></div>
+			<div class="passengercoachbodysection">
+			<div class="topwindowset">
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+			</div>
+			<div class="passengerstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+				<div class="bottomwindowset">
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pdoor"><div class="dwindow"></div></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			
+			<div class="twostoreypassengercoach">
+			<div class="innerway"></div>
+			<div class="passengercoachbodysection">
+			<div class="topwindowset">
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+			</div>
+			<div class="passengerstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+				<div class="bottomwindowset">
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pdoor"><div class="dwindow"></div></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+		
+		
+		<div class="twostoreypassengercoach">
+			<div class="innerway"></div>
+			<div class="passengercoachbodysection">
+			<div class="topwindowset">
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+			</div>
+			<div class="passengerstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+				<div class="bottomwindowset">
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pdoor"><div class="dwindow"></div></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			
+			<div class="twostoreypassengercoach">
+			<div class="innerway"></div>
+			<div class="passengercoachbodysection">
+			<div class="topwindowset">
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+			</div>
+			<div class="passengerstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+				<div class="bottomwindowset">
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pdoor"><div class="dwindow"></div></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			
+			<div class="twostoreypassengercoach">
+			<div class="innerway"></div>
+			<div class="passengercoachbodysection">
+			<div class="topwindowset">
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+				<div class="pwindowtop"></div>
+			</div>
+			<div class="passengerstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+				<div class="bottomwindowset">
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pdoor"><div class="dwindow"></div></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+				<div class="pwindowbottom"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+		
+		
+		
+		<div class="singlestoreypassengercoach">
+		<div class="connector"></div>
+			<div class="singlestoreypassengercoachbodysection">
+			<div class="windowset">
+				<div class="psdoor"><div class="dswindow"></div></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+			</div>	
+			<div class="spstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			
+			<div class="singlestoreypassengercoach">
+			<div class="singleinnerway"></div>
+			<div class="singlestoreypassengercoachbodysection">
+			<div class="windowset">
+				<div class="psdoor"><div class="dswindow"></div></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+			</div>	
+			<div class="spstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			<div class="singlestoreypassengercoach">
+			<div class="singleinnerway"></div>
+			<div class="singlestoreypassengercoachbodysection">
+			<div class="windowset">
+				<div class="psdoor"><div class="dswindow"></div></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+			</div>	
+			<div class="spstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			<div class="singlestoreypassengercoach">
+			<div class="singleinnerway"></div>
+			<div class="singlestoreypassengercoachbodysection">
+			<div class="windowset">
+				<div class="psdoor"><div class="dswindow"></div></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+			</div>	
+			<div class="spstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+			
+			<div class="singlestoreypassengercoach">
+			<div class="singleinnerway"></div>
+			<div class="singlestoreypassengercoachbodysection">
+			<div class="windowset">
+				<div class="psdoor"><div class="dswindow"></div></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+				<div class="window"></div>
+			</div>	
+			<div class="spstripe">
+				<div class="red"></div>
+				<div class="white"></div>
+				<div class="blue"></div>
+			</div>
+			</div>
+			<div class="wheelset">
+				<div class="axle1"></div>
+				<div class="bogie">
+						<div class="wheels">|</div>
+						<div class="wheels">|</div>
+				</div>
+				<div class="wheelgap"></div>
+				<div class="axle2"></div>
+						<div class="bogie">
+							<div class="wheels">|</div>
+							<div class="wheels">|</div>
+						</div>
+				</div>
+			</div>
+	</div>
+	
+	<div id="track"></div>
+	<div id="rockbed">
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+		<div class="stones"></div>
+	</div>
+	<div id="ground1"></div>
+	<div id="ground2"></div>
+	<div id="ground3"></div>
+	<div id="road"></div>
+	<div id="roadmiddleline"></div>
+	<div id="railgatestand"></div>
+	<div id="signalbox">
+		<div class="redlight" id="rl1"></div>
+		<div class="redlight" id="rl2" style="margin-left: 10px;"></div>
+	</div>
+	<div id="railcross1"></div>
+	<div id="railcross2"></div>
+	<div id="railgategearbox"></div>
+	<div id="movablerailgatebox">
+		<div id="signalredlight"></div>
+		<div id="railgate"></div>
+	</div>
+</div>
+
+<script>
+	/*javascript code of cloud moving start*/
+	var cloudgroup=document.getElementById("movingcloud");
+		var position=1380;
+		setInterval(function()
+		{
+		 position--;
+		 cloudgroup.style.left=position+'px';
+		 if(position==-1360)	{position=1380;}
+		},30);
+	/*javascript code of cloud moving end*/
+	
+	
+	/*javascript code of train passing, signalling, and gate control start*/
+	var train=document.getElementById("train");
+	var trainposition=2000;
+	var stoptrain=setInterval(runningtrain,50);
+	var leftlight=setInterval(leftsignal,500);
+	var rightlight=setInterval(rightsignal,1000);
+	
+	 function runningtrain()
+	{
+		trainposition=trainposition-10;
+		train.style.left=trainposition+'px';
+		
+		if(trainposition==1400)
+		{
+			gatelighton();
+			gateclose();
+			
+		}
+		else if(trainposition==-3800)
+		{
+			clearInterval(leftlight);
+			clearInterval(rightlight);
+			gateopen();
+			signaloff();
+		}
+		else if(trainposition==-4200)
+		{clearInterval(stoptrain);}	
+		else{}	
+	}
+	
+	function leftsignal()
+		{
+			document.getElementById("rl1").style.background="radial-gradient(white,red,red)";
+			document.getElementById("rl2").style.background="radial-gradient(white,black,black)";
+		}
+	
+	function rightsignal()
+		{
+				document.getElementById("rl2").style.background="radial-gradient(white,red,red)";
+				document.getElementById("rl1").style.background="radial-gradient(white,black,black)";
+		}
+
+		function gateclose()
+		{document.getElementById("movablerailgatebox").style.transform="rotate(0deg)";}
+		
+		function gatelighton()
+		{document.getElementById("signalredlight").style.background="radial-gradient(white,red,red)";}
+	
+		function signaloff()
+		{
+			document.getElementById("rl1").style.background="radial-gradient(white,black,black)";
+			document.getElementById("rl2").style.background="radial-gradient(white,black,black)";
+			document.getElementById("signalredlight").style.background="radial-gradient(white,black,black)";
+		}
+	
+		function gateopen()
+		{document.getElementById("movablerailgatebox").style.transform="rotate(-79deg)";}
+	/*javascript code of train passing, signalling, and gate control end*/
+</script>
+
+</body>
+</html>
